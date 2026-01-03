@@ -5,28 +5,31 @@ import "dotenv/config";
 const app = express();
 app.use(express.json());
 
-// MySQL connection pool
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  waitForConnections: true,
-  connectionLimit: 10,
 });
 
-// Test MySQL connection
-(async () => {
+// 🔹 TEST ROUTE
+app.get("/test-db", async (req, res) => {
   try {
-    const connection = await pool.getConnection();
-    console.log("✅ MySQL connected to merit_portal");
-    connection.release();
+    const [rows] = await pool.query("SELECT 1 AS result");
+    res.json({
+      success: true,
+      message: "MySQL connected successfully",
+      rows
+    });
   } catch (error) {
-    console.error("❌ MySQL connection failed:", error.message);
+    res.status(500).json({
+      success: false,
+      message: "Cannot connect to test db",
+      error: error.message
+    });
   }
-})();
+});
 
-// Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
