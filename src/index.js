@@ -1,7 +1,11 @@
-import "dotenv/config";
+import express from "express";
 import mysql from "mysql2/promise";
+import "dotenv/config";
 
+const app = express();
+app.use(express.json());
 
+// MySQL connection pool
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -11,15 +15,7 @@ const pool = mysql.createPool({
   connectionLimit: 10,
 });
 
-export default pool;
-import express from "express";
-import pool from "./db/index.js";
-import "dotenv/config";
-
-const app = express();
-
-app.use(express.json());
-
+// Test MySQL connection
 (async () => {
   try {
     const connection = await pool.getConnection();
@@ -30,7 +26,10 @@ app.use(express.json());
   }
 })();
 
+// Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () =>
-  console.log(`🚀 Server running on port ${PORT}`)
-);
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
+
+
