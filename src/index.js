@@ -1,10 +1,13 @@
+// backend/index.js
 import express from "express";
 import mysql from "mysql2/promise";
-import "dotenv/config";
+import "dotenv/config"; // loads .env automatically
+import usersRoute from "./routes/users.js"; // make sure to add .js at the end
 
 const app = express();
 app.use(express.json());
 
+// ✅ MySQL Pool
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -19,20 +22,26 @@ app.get("/test-db", async (req, res) => {
     res.json({
       success: true,
       message: "MySQL connected successfully",
-      rows
+      rows,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
       message: "Cannot connect to test db",
-      error: error.message
+      error: error.message,
     });
   }
 });
 
+// ✅ USER ROUTES
+app.use("/api/users", usersRoute(pool)); // pass pool to routes
+
+// ✅ Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
+
+
 
 
