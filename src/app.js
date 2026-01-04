@@ -11,5 +11,14 @@ app.use(cors());
 app.get("/", (req, res) => {
   res.send("Backend is running");
 });
+const express = require("express");
+const app = express();
+
+app.use(express.json());
+
+const userRoutes = require("./routes/userRoutes");
+app.use("/api", userRoutes);
+
+module.exports = app;
 
 export default app;
