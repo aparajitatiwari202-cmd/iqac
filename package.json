@@ -28,5 +28,13 @@
     "express": "^5.2.1",
     "multer": "^2.0.2",
     "mysql2": "^3.16.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aparajitatiwari202-cmd/iqac.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aparajitatiwari202-cmd/iqac/issues"
+  },
+  "homepage": "https://github.com/aparajitatiwari202-cmd/iqac#readme"
 }
