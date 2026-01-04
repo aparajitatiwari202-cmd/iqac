@@ -1,24 +1,23 @@
 import express from "express";
-import "./db/index.js"; // IMPORTANT: this triggers DB connection
+import "./db/index.js"; // triggers DB connection
 import cors from "cors";
-import cookieParser from "cookie-parser"
-import multer from "multer"
+import cookieParser from "cookie-parser";
+import multer from "multer";
+import userRoutes from "./routes/userRoutes.js";
 
 const app = express();
+
+// Middlewares
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser());
 
+// Optional: test route
 app.get("/", (req, res) => {
   res.send("Backend is running");
 });
-const express = require("express");
-const app = express();
 
-app.use(express.json());
-
-const userRoutes = require("./routes/userRoutes");
+// API routes
 app.use("/api", userRoutes);
-
-module.exports = app;
 
 export default app;
