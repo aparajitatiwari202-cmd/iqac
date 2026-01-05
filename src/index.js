@@ -1,28 +1,33 @@
-
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import pool from "./db/db.js";
+
+import pool from "./db/mysql.js";
 import usersRoute from "./routes/users.js";
 
 dotenv.config();
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
 // Middlewares
-app.use(cors()); // allow frontend calls
+app.use(cors());
 app.use(express.json());
 
-// Test route
-app.get("/", (req, res) => {
-  res.send("Backend is running!");
-});
-
-// API routes
-app.use("/api/students", usersRoute(pool)); // full endpoint: /api/students
+// API Routes
+app.use("/api/users", usersRoute(pool));
 
 // Start server
-const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`🚀 Backend running on port ${PORT}`);
+  console.log(`Backend running on http://localhost:${PORT}`);
 });
+
+
+
+app.use(
+  cors({
+    origin: "http://localhost:3000", // or 5173 if Vite
+    credentials: true
+  })
+);
+app.use(cors());
