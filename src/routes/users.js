@@ -3,6 +3,21 @@ import express from "express";
 export default function usersRoute(pool) {
   const router = express.Router();
 
+  
+router.get("/test-db", async (req, res) => {
+  try {
+    const [rows] = await pool.query("SELECT 1 AS test");
+    res.json({ success: true, db: "connected", result: rows });
+  } catch (error) {
+    console.error("DB Test Error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+
+
+
+
   // GET all users
   router.get("/", async (req, res) => {
     try {
