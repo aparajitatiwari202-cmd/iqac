@@ -14,14 +14,23 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// API Routes
+// Test DB connection
+app.get("/api/health", async (req, res) => {
+  try {
+    await pool.query("SELECT 1");
+    res.json({ status: "Backend & MySQL connected ✅" });
+  } catch (error) {
+    res.status(500).json({ status: "MySQL NOT connected ❌" });
+  }
+});
+
+// Routes
 app.use("/api/users", usersRoute(pool));
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`Backend running on http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });
-
 
 
 app.use(
